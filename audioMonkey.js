@@ -306,7 +306,7 @@ function AudioMonkey() {
             if((this.sounds[id].sound && this.sounds[id].sound.playbackState == AudioBufferSourceNode.PLAYING_STATE && !this.sounds[id].reversed)) {
                 if(loop) return;
                 else this.stop(id);
-            }//if
+            }//ifı
         } catch(err) {
             log("error", err);
         }
@@ -322,9 +322,9 @@ function AudioMonkey() {
 
             if(rate < 0) {
                 buffer = this.cloneAudioBuffer(this.sounds[id].buffer);
-
-                Array.prototype.reverse.call( buffer.getChannelData(0) );
-                Array.prototype.reverse.call( buffer.getChannelData(1) );
+    	        
+                if(buffer.numberOfChannels > 0) Array.prototype.reverse.call( buffer.getChannelData(0) );
+                if(buffer.numberOfChannels > 1) Array.prototype.reverse.call( buffer.getChannelData(1) );
             }//if
 
             sound.buffer = buffer;                          // tell the source which sound to play
@@ -368,7 +368,9 @@ function AudioMonkey() {
         } catch(err) {
             log("error", err);
         }
-
+        
+        this.sounds[id].sound = sound;
+        
         try {
             // Create a gain node.
             gain = this.context.createGain();
@@ -415,8 +417,8 @@ function AudioMonkey() {
 
             var buffer = this.cloneAudioBuffer(this.sounds[id].buffer);
 
-            Array.prototype.reverse.call( buffer.getChannelData(0) );
-            Array.prototype.reverse.call( buffer.getChannelData(1) );
+            if(buffer.numberOfChannels > 0) Array.prototype.reverse.call( buffer.getChannelData(0) );
+            if(buffer.numberOfChannels > 1) Array.prototype.reverse.call( buffer.getChannelData(1) );
 
             this.sounds[id].sound.loop = false;
 
